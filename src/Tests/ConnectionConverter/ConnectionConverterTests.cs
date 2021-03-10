@@ -14,14 +14,14 @@ public class ConnectionConverterTests
 {
     static ConnectionConverterTests()
     {
-        sqlInstance = new SqlInstance<MyContext>(
+        sqlInstance = new(
             buildTemplate: async dbContext =>
             {
                 await dbContext.Database.EnsureCreatedAsync();
                 dbContext.AddRange(list.Select(x => new Entity {Property = x}));
                 await dbContext.SaveChangesAsync();
             },
-            constructInstance: builder => new MyContext(builder.Options));
+            constructInstance: builder => new(builder.Options));
     }
 
     static List<string> list = new()
@@ -56,7 +56,7 @@ public class ConnectionConverterTests
     [InlineData(null, 7, 2, null)]
     public async Task Queryable(int? first, int? after, int? last, int? before)
     {
-        var fieldContext = new ResolveFieldContext<string>();
+        ResolveFieldContext<string> fieldContext = new();
         await using var database = await sqlInstance.Build(databaseSuffix: $"{first.GetValueOrDefault(0)}{after.GetValueOrDefault(0)}{last.GetValueOrDefault(0)}{before.GetValueOrDefault(0)}");
         var entities = database.Context.Entities;
         var connection = await ConnectionConverter.ApplyConnectionContext(entities.OrderBy(x=>x.Property), first, after, last, before, fieldContext, new Filters());

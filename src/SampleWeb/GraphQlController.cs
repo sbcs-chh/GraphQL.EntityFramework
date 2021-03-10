@@ -54,7 +54,7 @@ public class GraphQlController :
         JObject? variables,
         CancellationToken cancellation)
     {
-        var options = new ExecutionOptions
+        ExecutionOptions options = new()
         {
             Schema = schema,
             Query = query,
@@ -68,7 +68,7 @@ public class GraphQlController :
         };
         var executeAsync = await executer.ExecuteAsync(options);
 
-        return new ExecutionResult
+        return new()
         {
             Data = executeAsync.Data,
             Errors = executeAsync.Errors

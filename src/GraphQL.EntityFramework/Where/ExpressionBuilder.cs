@@ -30,7 +30,7 @@ namespace GraphQL.EntityFramework
         private static Expression MakePredicateBody(IEnumerable<WhereExpression> wheres)
         {
             Expression? mainExpression = null;
-            var previousWhere = new WhereExpression();
+            WhereExpression previousWhere = new();
 
             // Iterate over wheres
             foreach (var where in wheres)
@@ -327,10 +327,9 @@ namespace GraphQL.EntityFramework
                         var notEqualExpression = Expression.NotEqual(indexOfExpression, ExpressionCache.NegativeOne);
                         return Expression.AndAlso(nullCheck, notEqualExpression);
                 }
-
             }
 
-            throw new NotSupportedException($"Invalid comparison operator '{comparison}'.");
+            throw new($"Invalid comparison operator '{comparison}'.");
         }
 
         /// <summary>
@@ -355,7 +354,7 @@ namespace GraphQL.EntityFramework
                     return Expression.MakeBinary(ExpressionType.LessThanOrEqual, left, constant);
             }
 
-            throw new NotSupportedException($"Invalid comparison operator '{comparison}'.");
+            throw new($"Invalid comparison operator '{comparison}'.");
         }
 
         #endregion
@@ -383,7 +382,7 @@ namespace GraphQL.EntityFramework
                     return Expression.OrElse(expr1, expr2);
             }
 
-            throw new NotSupportedException($"Invalid connector operator '{connector}'.");
+            throw new($"Invalid connector operator '{connector}'.");
         }
 
         /// <summary>

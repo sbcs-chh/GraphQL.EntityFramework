@@ -74,9 +74,9 @@ static class ModelBuilder
 {
     public static IModel GetInstance()
     {
-        var builder = new DbContextOptionsBuilder();
+        DbContextOptionsBuilder builder = new();
         builder.UseSqlServer("Fake");
-        using var context = new MyDbContext(builder.Options);
+        using MyDbContext context = new(builder.Options);
         return context.Model;
     }
 }
@@ -305,7 +305,7 @@ public class GraphQlController :
         JObject? variables,
         CancellationToken cancellation)
     {
-        var options = new ExecutionOptions
+        ExecutionOptions options = new()
         {
             Schema = schema,
             Query = query,
@@ -319,7 +319,7 @@ public class GraphQlController :
         };
         var executeAsync = await executer.ExecuteAsync(options);
 
-        return new ExecutionResult
+        return new()
         {
             Data = executeAsync.Data,
             Errors = executeAsync.Errors
@@ -402,7 +402,7 @@ Use the user type to pass in both DbContext instances.
 <!-- snippet: MultiExecutionOptions -->
 <a id='snippet-multiexecutionoptions'></a>
 ```cs
-var executionOptions = new ExecutionOptions
+ExecutionOptions executionOptions = new()
 {
     Schema = schema,
     Query = query,
@@ -732,9 +732,9 @@ query ($id: ID!)
 
     static TestServer GetTestServer()
     {
-        var hostBuilder = new WebHostBuilder();
+        WebHostBuilder hostBuilder = new();
         hostBuilder.UseStartup<Startup>();
-        return new TestServer(hostBuilder);
+        return new(hostBuilder);
     }
 }
 ```

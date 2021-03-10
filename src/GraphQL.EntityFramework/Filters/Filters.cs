@@ -69,7 +69,7 @@ namespace GraphQL.EntityFramework
                 return result;
             }
 
-            var list = new List<TEntity>();
+            List<TEntity> list = new();
             foreach (var item in result)
             {
                 if (await ShouldInclude(userContext, item, filters))
