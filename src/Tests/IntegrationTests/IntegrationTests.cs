@@ -614,6 +614,53 @@ mutation {
     }
 
     [Fact]
+    public async Task Where_Parent_Child()
+    {
+        var query = @"
+{
+  parentEntity(where: {path: ""property"", comparison: equal, value: ""Value1""}) {
+    property
+    children(where: {path: ""property"", comparison: equal, value: ""Value2""})
+    {
+      property
+    }
+  }
+}";
+
+        var entity1 = new ParentEntity
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            Property = "Value1"
+        };
+        var entity2 = new ChildEntity
+        {
+            Property = "Value2",
+            Parent = entity1
+        };
+        var entity3 = new ChildEntity
+        {
+            Property = "Value3",
+            Parent = entity1
+        };
+        entity1.Children.Add(entity2);
+        entity1.Children.Add(entity3);
+        var entity4 = new ParentEntity
+        {
+            Property = "Value4"
+        };
+        var entity5 = new ChildEntity
+        {
+            Property = "Value5",
+            Parent = entity4
+        };
+        entity4.Children.Add(entity5);
+
+        await using var database = await sqlInstance.Build();
+        var result = await RunQuery(database, query, null, null, false, entity1, entity2, entity3, entity4, entity5);
+        await Verifier.Verify(result);
+    }
+
+    [Fact]
     public async Task SingleParent_Child()
     {
         var query = @"
