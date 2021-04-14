@@ -237,7 +237,25 @@ public partial class IntegrationTests
 
         await using var database = await sqlInstance.Build();
         await RunQuery(database, query, null, null, false, entities.ToArray());
+    }
 
+    [Fact]
+    public async Task NullAddNavigationField()
+    {
+        var query = @"
+{
+  parentEntities {
+    id
+    nullNavigationChild {
+          id
+        }
+  }
+}
+";
+        var entities = BuildEntities(8);
+
+        await using var database = await sqlInstance.Build();
+        await RunQuery(database, query, null, null, false, entities.ToArray());
     }
 
     [Fact]

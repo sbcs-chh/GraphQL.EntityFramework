@@ -1,4 +1,6 @@
-﻿using GraphQL;
+﻿using System;
+using System.Linq;
+using GraphQL;
 using GraphQL.EntityFramework;
 
 [GraphQLMetadata("Parent")]
@@ -11,7 +13,14 @@ public class ParentGraph :
         AddNavigationConnectionField(
             name: "childrenConnection",
             resolve: context => context.Source.Children,
-            includeNames: new[] { "Children" });
+            includeNames: new[] {"Children"});
+        AddNavigationField(
+            name: "nullNavigationChild",
+            resolve: context =>
+            {
+                return context.Source.Children.FirstOrDefault(x => x.Id == Guid.Empty);
+            },
+            includeNames: new[] {"Children"});
         AutoMap();
     }
 }
