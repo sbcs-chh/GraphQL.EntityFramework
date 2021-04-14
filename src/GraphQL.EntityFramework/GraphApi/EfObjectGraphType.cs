@@ -50,10 +50,11 @@ namespace GraphQL.EntityFramework
             Func<ResolveEfFieldContext<TDbContext, TSource>, TReturn?>? resolve = null,
             Type? graphType = null,
             IEnumerable<string>? includeNames = null,
+            bool nullable = false,
             string? description = null)
             where TReturn : class
         {
-            return GraphQlService.AddNavigationField(this, name, resolve, graphType, includeNames, description);
+            return GraphQlService.AddNavigationField(this, name, resolve, graphType, includeNames, nullable, description);
         }
 
         public FieldType AddNavigationListField<TReturn>(

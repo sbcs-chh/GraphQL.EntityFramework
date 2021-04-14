@@ -15,13 +15,14 @@ namespace GraphQL.EntityFramework
             Func<ResolveEfFieldContext<TDbContext, TSource>, TReturn?>? resolve = null,
             Type? graphType = null,
             IEnumerable<string>? includeNames = null,
+            bool nullable = false,
             string? description = null)
             where TReturn : class
         {
             Guard.AgainstNull(nameof(graph), graph);
             Guard.AgainstNullWhiteSpace(nameof(name), name);
 
-            graphType ??= GraphTypeFinder.FindGraphType<TReturn>();
+            graphType ??= GraphTypeFinder.FindGraphType<TReturn>(nullable);
 
             FieldType field = new()
             {

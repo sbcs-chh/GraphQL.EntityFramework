@@ -20,6 +20,7 @@ public class ParentGraph :
             {
                 return context.Source.Children.FirstOrDefault(x => x.Id == Guid.Empty);
             },
+            nullable: true,
             includeNames: new[] {"Children"});
         AutoMap();
     }

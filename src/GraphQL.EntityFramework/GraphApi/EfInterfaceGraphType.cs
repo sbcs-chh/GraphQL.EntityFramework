@@ -33,10 +33,11 @@ namespace GraphQL.EntityFramework
             string name,
             Type? graphType = null,
             IEnumerable<string>? includeNames = null,
+            bool nullable = false,
             string? description = null)
             where TReturn : class
         {
-            return GraphQlService.AddNavigationField<TSource, TReturn>(this, name, null, graphType, includeNames, description);
+            return GraphQlService.AddNavigationField<TSource, TReturn>(this, name, null, graphType, includeNames, nullable, description);
         }
 
         public FieldType AddNavigationListField<TReturn>(

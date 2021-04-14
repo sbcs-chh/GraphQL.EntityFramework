@@ -13,6 +13,7 @@ namespace GraphQL.EntityFramework
             Func<ResolveEfFieldContext<TDbContext, TSource>, TReturn?>? resolve = null,
             Type? graphType = null,
             IEnumerable<string>? includeNames = null,
+            bool nullable = false,
             string? description = null)
             where TReturn : class;
 
