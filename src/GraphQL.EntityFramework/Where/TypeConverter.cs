@@ -17,7 +17,7 @@ static class TypeConverter
             throw new($"Null passed to In expression for non nullable type '{type.FullName}'.");
         }
 
-        var list = ConvertStringsToListInternal(values.Where(x => x is not null).Select(x=>x!), type);
+        var list = ConvertStringsToListInternal(values.Where(x => x is not null).Select(x => x!), type);
         if (hasNull)
         {
             list.Add(null);
@@ -109,6 +109,15 @@ static class TypeConverter
             return values.Select(s => new ulong?(ulong.Parse(s))).ToList();
         }
 
+        if (type == typeof(DateOnly))
+        {
+            return values.Select(DateOnly.Parse).ToList();
+        }
+        if (type == typeof(DateOnly?))
+        {
+            return values.Select(s => new DateOnly?(DateOnly.Parse(s))).ToList();
+        }
+
         if (type == typeof(DateTime))
         {
             return values.Select(DateTime.Parse).ToList();
@@ -147,6 +156,11 @@ static class TypeConverter
             }
 
             type = underlyingType;
+        }
+
+        if (type == typeof(DateOnly))
+        {
+            return DateOnly.Parse(value!);
         }
 
         if (type == typeof(DateTime))
